@@ -1,0 +1,146 @@
+<html>
+  <head><title>Chat Demo</title>
+    <script type="text/javascript" src="AJAXrequest.js"></script>
+    <style>
+    input{
+      border:1px solid purple;
+      height:40px;
+      width:280px;
+      padding:4px 10px 4px 10px;
+      font-size:16px;
+      color:purple;
+      position:absolute;
+      top:0px;
+      left:0px;
+    }
+    button{
+      height:40px;
+      width:55px;
+      background:purple;
+      color:white;
+      position:absolute;
+      top:0px;
+      right:0px;
+    }
+    #outer{
+      border:1px solid black;
+      width:340px;
+      height:500px;
+      position:absolute;
+    }
+    #txt_node_here{
+      border:1px solid green;
+      height:443px;
+      width:308px;
+      padding-left:30px;
+      padding-top:10px;
+      position:absolute;
+      background:black;
+      overflow-y:auto;
+      scroll-behavior:smooth;
+    }
+    .txt_node_right{
+      max-width:180px;
+      min-height:30px;
+      color:white;
+      background:purple;
+      border-radius:20px;
+      padding:8px 10px 8px 18px;
+      position:relative;
+      margin-bottom:28px;
+      right:-72px;
+    }
+    .img_right_node{
+      position:absolute;
+      bottom:-20px;
+      right:-22px;
+    }
+
+    .txt_node_left{
+      max-width:180px;
+      min-height:30px;
+      color:white;
+      background:purple;
+      border-radius:20px;
+      padding:8px 10px 8px 18px;
+      position:relative;
+      margin-bottom:28px;
+      left:0px;
+    }
+    .img_left_node{
+      position:absolute;
+      bottom:-20px;
+      left:-22px;
+    }
+
+  </style></head>
+  <body>
+    <div id="outer">
+      <div id="txt_node_here">
+
+
+
+      </div>
+
+      <div style="position:absolute;left:1px;bottom:1px;border:1px solid black;width:336px;height:40px;">
+        <input id="txt_in" placeholder="Your text here" type="text" name="data"/>
+        <button onclick="sendAJAX()">SEND</button>
+      </div>
+    </div>
+  </body>
+</html>
+<script>
+
+  // for client txet
+  function CText(txt){
+    if(txt == ""|| !txt){ return;}
+     var text_node_here = document.getElementById("txt_node_here");
+     var node = document.createElement("div");
+     node.className = "txt_node_left";
+
+     var img = document.createElement("img");
+     img.height = 30;
+     img.src = "right.svg";
+     img.className = "img_left_node";
+     node.appendChild(img);
+
+     var txt_node = document.createTextNode(txt);
+     node.appendChild(txt_node);
+
+
+     text_node_here.appendChild(node);
+     text_node_here.scrollTop += 3600;
+  }
+
+// for server text
+  function SText(txt){
+    if(txt == "" || !txt){ return;}
+     var text_node_here = document.getElementById("txt_node_here");
+     var node = document.createElement("div");
+     node.className = "txt_node_right";
+
+     var img = document.createElement("img");
+     img.height = 30;
+     img.src = "left.svg";
+     img.className = "img_right_node";
+     node.appendChild(img);
+
+     var txt_node = document.createTextNode(txt);
+     node.appendChild(txt_node);
+
+
+     text_node_here.appendChild(node);
+  }
+
+function sendAJAX(){
+   var txt_in = document.getElementById("txt_in");
+   var hold = txt_in.value;
+   CText(hold);
+   AJAXrequest("POST", "CText.php", "?any_new='get'", function(tx){
+  //   alert(tx);
+   txt_in.value= null;
+   });
+}
+
+
+</script>
